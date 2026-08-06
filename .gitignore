@@ -1,0 +1,14 @@
+node_modules/
+dist/
+qa/
+.venv/
+.DS_Store
+*.log
+
+# ferramentas de agente/skills instaladas localmente — nao fazem parte do site
+.agents/
+.claude/
+skills-lock.json
+
+# cache local do Supabase CLI
+supabase/.temp/

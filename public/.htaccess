@@ -1,0 +1,64 @@
+# ===========================================================================
+# Residencial Sardenha — configuracao Apache (HostGator / cPanel)
+# Sobe junto com o resto do dist/ para a pasta do subdominio.
+# ===========================================================================
+
+# --------------------------------------------------------------- HTTPS
+# So depois que o AutoSSL tiver emitido o certificado do subdominio.
+# Se ligar antes, o site fica inacessivel ate o certificado sair.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ----------------------------------------------------------- MIME types
+# Apache mais antigo nao conhece AVIF nem WOFF2. Sem estas linhas o navegador
+# recebe os arquivos como octet-stream, descarta o AVIF e cai no JPEG — a
+# pagina fica varias vezes mais pesada sem nenhum erro visivel.
+AddType image/avif                  .avif
+AddType image/webp                  .webp
+AddType font/woff2                  .woff2
+AddType image/svg+xml               .svg
+AddType application/manifest+json   .webmanifest
+
+# ---------------------------------------------------------------- cache
+<IfModule mod_headers.c>
+  # midia e fontes: nomes estaveis, versionados trocando o arquivo
+  <FilesMatch "\.(avif|webp|jpe?g|png|gif|svg|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # js/css do Vite ja vem com hash no nome
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # o HTML precisa revalidar, senao a troca de conteudo nao chega em quem ja visitou
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ----------------------------------------------------------- compressao
+# Sem imagem e sem woff2: ja sao formatos comprimidos, recomprimir so gasta CPU.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ------------------------------------------------------------- diversos
+# Pagina unica: qualquer caminho inexistente volta para a landing em vez de 404.
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+Options -Indexes
+ErrorDocument 404 /index.html
