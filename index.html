@@ -54,6 +54,7 @@
   <nav class="nav__links" aria-label="Seções">
     <a href="#empreendimento">O empreendimento</a>
     <a href="#lazer">Lazer</a>
+    <a href="#pagamento">Condições</a>
     <a href="#unidades">Plantas</a>
     <a href="#localizacao">Localização</a>
   </nav>
@@ -82,14 +83,113 @@
       <p class="lead" data-hero-sub>Residencial Sardenha: quatro torres na Praia do Massaguaçu, com studios de 43m² e apartamentos de 61m². Comprando ainda na fase de obra, direto com a incorporadora, o capital fica diluído ao longo da construção.</p>
       <div class="hero__cta">
         <a href="#contato" class="btn btn--primary" data-magnetic data-cta="hero-primario">Receber tabela e plantas</a>
-        <a href="#bifurcacao" class="btn btn--ghost" data-cta="hero-secundario">Ver se faz sentido pra mim</a>
+        <a href="#pagamento" class="btn btn--ghost" data-cta="hero-secundario">Ver as condições</a>
       </div>
+      <p class="hero__gancho">Studios a partir de <strong>R$ 258.641</strong> · entrada em 6x · sem financiamento bancário</p>
     </div>
   </div>
 
   <a class="hero__scroll" href="#endereco" aria-label="role para ver o empreendimento">
     <span>role</span><i aria-hidden="true"></i>
   </a>
+</section>
+
+<!-- ======================= CONDIÇÕES DE PAGAMENTO =======================
+     Os valores marcados com data-slot sao recalculados pelo JS a cada
+     carregamento, a partir de src/precos.ts e da data de hoje. O que esta
+     escrito no HTML e o valor da data do build — serve de fallback e some
+     em milissegundos. Nao edite estes numeros a mao: edite src/precos.ts.
+     ===================================================================== -->
+<section class="section section--slate pagto" id="pagamento">
+  <div class="wrap">
+   <div class="pagto__grid">
+    <div class="pagto__intro" data-reveal>
+      <p class="eyebrow">Condições de pagamento</p>
+      <h2 class="display h-md">Obra a preço de custo, direto com a incorporadora.</h2>
+      <p class="lead">Sem banco no meio: as parcelas quitam 100% do imóvel — não há saldo bancário na entrega nem análise de crédito para passar.</p>
+      <ul class="ticks">
+        <li>Entrada diluída em 6 vezes</li>
+        <li>Valores conferidos com o espelho da incorporadora</li>
+        <li>Atualizados automaticamente a cada mês de obra</li>
+      </ul>
+    </div>
+
+    <div class="pagto__card" data-reveal>
+      <div class="pagto__tabs" role="tablist" aria-label="Escolha a tipologia">
+        <button class="pagto__tab is-on" role="tab" aria-selected="true" data-tipo="studio" id="tab-studio" aria-controls="painel-pagto">Studio 43,87m²</button>
+        <button class="pagto__tab" role="tab" aria-selected="false" data-tipo="apto" id="tab-apto" aria-controls="painel-pagto">Apto 61,42m²</button>
+      </div>
+
+      <div id="painel-pagto" role="tabpanel" aria-labelledby="tab-studio">
+        <p class="pagto__desc" data-slot="descricao">1 suíte · 1 vaga + hobby box</p>
+
+        <div class="pagto__bloco pagto__bloco--destaque">
+          <div class="pagto__bloco-h">
+            <span class="pagto__bloco-t">Entrada</span>
+            <span class="pagto__bloco-s">diluída em 6x</span>
+          </div>
+          <div class="pagto__lin">
+            <span class="pagto__d">Entrada do ato
+              <small>1/6 da entrada + <b data-slot="mensaisVencidas">8</b> mensais de obra que já venceram desde janeiro</small>
+            </span>
+            <b data-slot="entradaDoAto">R$ 35.607</b>
+          </div>
+          <div class="pagto__lin">
+            <span class="pagto__d">Mais 5 parcelas mensais de<small>2ª à 6ª parcela</small></span>
+            <b data-slot="parcelaEntrada">R$ 14.167</b>
+          </div>
+          <div class="pagto__sub">
+            <span>Total da entrada</span>
+            <b data-slot="entradaTotal">R$ 106.440</b>
+          </div>
+        </div>
+
+        <div class="pagto__bloco">
+          <div class="pagto__bloco-h">
+            <span class="pagto__bloco-t">Obra</span>
+            <span class="pagto__bloco-s" data-slot="periodoObra">set/2026 a dez/2029</span>
+          </div>
+          <div class="pagto__lin">
+            <span class="pagto__d"><b data-slot="mensaisRestantes">40</b> parcelas mensais de</span>
+            <b data-slot="mensal">R$ 2.680</b>
+          </div>
+          <div class="pagto__lin">
+            <span class="pagto__d"><b data-slot="anuaisRestantes">3</b> parcelas anuais, sempre em julho<small data-slot="anosAnuais">2027, 2028 e 2029</small></span>
+            <b data-slot="anual">R$ 15.000</b>
+          </div>
+          <p class="pagto__alerta">Nos meses 2 a 6 as duas coisas coincidem: <b data-slot="mensalSobreposta">R$ 16.847</b>/mês (parcela da entrada + parcela da obra). Do 7º mês em diante, só a obra.</p>
+        </div>
+
+        <div class="pagto__total">
+          <span>Valor total <span data-slot="rotuloCurto">do studio</span></span>
+          <b data-slot="total">R$ 258.641</b>
+        </div>
+
+        <ul class="pagto__vantagens">
+          <li>Sem saldo bancário no final</li>
+          <li>Sem parcela na entrega das chaves</li>
+          <li>As parcelas quitam 100% do imóvel</li>
+        </ul>
+
+        <div class="pagto__entrega">
+          <span>Entrega prevista</span>
+          <b><span data-slot="rotuloEntrega">jul/2030</span> · faltam <span data-slot="mesesAteEntrega">47</span> meses</b>
+        </div>
+
+        <p class="pagto__aviso" data-slot="tarjaIncc" hidden></p>
+
+        <div class="pagto__rodape">
+          <p>Renda familiar sugerida a partir do 7º mês: <strong data-slot="rendaSugerida">R$ 13.100</strong>/mês — pode somar a sua renda com a do cônjuge.</p>
+          <p>Valores de <span data-slot="rotuloVigencia">agosto/2026</span>, corrigidos mensalmente pelo INCC. <strong>Não aceita FGTS e não há financiamento bancário</strong> — o pagamento é feito direto com a incorporadora.</p>
+        </div>
+
+        <a href="#contato" class="btn btn--primary pagto__cta" data-magnetic data-cta="pagamento"
+           data-perfil="Investir — renda de temporada e valorização"
+           data-unidade="43m² — 1 suíte">Quero as condições atualizadas</a>
+      </div>
+    </div>
+   </div>
+  </div>
 </section>
 
 <!-- ============================== O ENDEREÇO ============================== -->
@@ -159,47 +259,6 @@
   </div>
 </section>
 
-<!-- ========================== A JANELA DE ENTRADA ========================== -->
-<section class="section section--slate" id="janela">
-  <div class="wrap">
-    <div class="split">
-      <div data-reveal>
-        <p class="eyebrow">A janela de entrada</p>
-        <h2 class="display h-lg">Comprar na obra não é desconto. É cronologia.</h2>
-        <p class="lead">Um imóvel em construção e o mesmo imóvel pronto não são o mesmo produto. Você entra antes da entrega, acompanha a obra subir e escolhe o que fazer quando a chave existir — sem ter desembolsado tudo no primeiro dia.</p>
-
-        <ol class="timeline">
-          <li>
-            <span class="timeline__step">Lançamento</span>
-            <p>Tabela da fase de obra, negociada direto com a Lollo Ganassali. É aqui que o tíquete é menor.</p>
-          </li>
-          <li>
-            <span class="timeline__step">Construção</span>
-            <p>Entrada e parcelas distribuídas no cronograma. O capital fica diluído no tempo em vez de travado.</p>
-          </li>
-          <li>
-            <span class="timeline__step">Entrega</span>
-            <p>Três saídas possíveis: morar, operar em temporada ou revender. A decisão fica com você, não com a tabela.</p>
-          </li>
-        </ol>
-
-        <a href="#contato" class="btn btn--primary" data-magnetic data-cta="janela">Ver as condições da fase atual</a>
-      </div>
-
-      <figure class="split__media" data-reveal>
-        <picture>
-          <source type="image/avif" sizes="(max-width:860px) 92vw, 46vw"
-            srcset="/media/fachada-close-640.avif 640w, /media/fachada-close-1024.avif 1024w, /media/fachada-close-1600.avif 1600w" />
-          <source type="image/webp" sizes="(max-width:860px) 92vw, 46vw"
-            srcset="/media/fachada-close-640.webp 640w, /media/fachada-close-1024.webp 1024w, /media/fachada-close-1600.webp 1600w" />
-          <img src="/media/fachada-close.jpg" width="1600" height="1309" loading="lazy" decoding="async"
-            alt="Render aproximado da fachada do Residencial Sardenha, mostrando as varandas das torres e o embasamento comercial no térreo." />
-        </picture>
-        <figcaption>Perspectiva ilustrativa da fachada.</figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
 
 <!-- =========================== O EMPREENDIMENTO =========================== -->
 <section class="section section--sea" id="empreendimento">

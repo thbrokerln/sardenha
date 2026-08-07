@@ -415,6 +415,207 @@ strong { font-weight: 700; }
 }
 @media (max-width: 560px) { .hero__scroll { display: none; } }
 
+/* ------------------------------------------------- condicoes de pagamento */
+.hero__gancho {
+  margin-top: 1.5em;
+  font-size: 0.92rem;
+  color: #e0e6e2;
+}
+.hero__gancho strong { color: #fff; font-weight: 700; }
+@media (max-width: 560px) { .hero__gancho { font-size: 0.85rem; } }
+
+/* duas colunas no desktop: o argumento a esquerda, a tabela a direita.
+   Em coluna unica o titulo empurrava o card para fora da primeira tela —
+   e o card e justamente o que a pessoa desceu para ver. */
+.pagto__grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: clamp(30px, 4.5vw, 68px);
+  align-items: start;
+}
+/* o card e bem mais alto que o texto: fixando a coluna da esquerda, o
+   argumento continua na tela enquanto a pessoa le os numeros */
+.pagto__intro { max-width: 46ch; position: sticky; top: 110px; }
+.pagto__intro .display { margin-block: 0.4em 0.55em; text-wrap: balance; }
+.pagto__intro .ticks { margin-top: 1.5em; }
+
+.pagto__card {
+  padding: clamp(22px, 2.6vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgb(253 250 245 / 0.04);
+}
+
+@media (max-width: 900px) {
+  .pagto__grid { grid-template-columns: 1fr; gap: 34px; }
+  .pagto__intro { max-width: none; position: static; }
+  .pagto__intro .ticks { display: none; } /* o card ja diz isso logo abaixo */
+}
+
+.pagto__tabs { display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.pagto__tab {
+  padding: 0.66em 1.15em;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mist);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.pagto__tab:hover { color: var(--paper); border-color: rgb(253 250 245 / 0.35); }
+.pagto__tab.is-on { background: var(--terra); border-color: var(--terra); color: #fff; }
+
+.pagto__desc { margin: 0.9em 0 1.3em; font-size: 0.86rem; color: var(--mist); }
+
+.pagto__bloco {
+  padding: 15px 17px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 13px;
+}
+.pagto__bloco--destaque {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+.pagto__bloco-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.pagto__bloco-t {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.pagto__bloco-s { font-size: 0.74rem; color: var(--mist); }
+
+.pagto__lin {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgb(253 250 245 / 0.09);
+}
+.pagto__lin:last-of-type { border-bottom: none; }
+.pagto__d { font-size: 0.93rem; color: #dfe4e0; }
+.pagto__d small {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--mist);
+}
+.pagto__d b { color: var(--accent); font-weight: 700; }
+.pagto__lin > b {
+  flex: none;
+  font-family: var(--ff-display);
+  font-size: 1.06rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pagto__sub {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--mist);
+}
+.pagto__sub b {
+  font-family: var(--ff-display);
+  font-size: 1.24rem;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+.pagto__alerta {
+  margin-top: 11px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: rgb(253 250 245 / 0.06);
+  font-size: 0.79rem;
+  line-height: 1.5;
+  color: #f0d6be;
+}
+.pagto__alerta b { color: #fff; }
+
+.pagto__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: 4px;
+  padding-top: 15px;
+  border-top: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.pagto__total > span { font-size: 0.88rem; font-weight: 600; color: var(--mist); }
+.pagto__total b {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 4.2vw, 2.1rem);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.pagto__vantagens { display: grid; gap: 0.5em; margin-top: 1.1em; }
+.pagto__vantagens li {
+  display: flex;
+  gap: 0.7em;
+  align-items: baseline;
+  font-size: 0.92rem;
+  color: #bfe0c9;
+}
+.pagto__vantagens li::before { content: "✓"; font-weight: 700; }
+
+.pagto__entrega {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 1.2em;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: rgb(253 250 245 / 0.07);
+  font-size: 0.88rem;
+  color: #dfe4e0;
+}
+.pagto__entrega b { font-family: var(--ff-display); font-size: 1.05rem; color: var(--paper); }
+
+.pagto__aviso {
+  margin-top: 1em;
+  padding: 11px 13px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  font-size: 0.81rem;
+  line-height: 1.55;
+  color: #f4dcc6;
+}
+
+.pagto__rodape { margin-top: 1.3em; display: grid; gap: 0.7em; }
+.pagto__rodape p { font-size: 0.78rem; line-height: 1.6; color: var(--mist); }
+.pagto__rodape strong { color: var(--paper); }
+
+.pagto__cta { width: 100%; margin-top: 1.5em; }
+
+@media (max-width: 520px) {
+  .pagto__lin { flex-direction: column; gap: 4px; }
+  .pagto__lin > b { font-size: 1.15rem; }
+  .pagto__tab { flex: 1; text-align: center; }
+}
+
 /* ------------------------------------------------------------------ stats */
 .stats {
   display: grid;

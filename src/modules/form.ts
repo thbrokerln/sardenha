@@ -91,18 +91,29 @@ export function initWhatsAppFloat(): void {
   el.addEventListener("click", () => trackContact({ origem: "float" }));
 }
 
-/** CTAs com data-perfil pre-selecionam o objetivo no formulario. */
+/**
+ * CTAs com data-perfil / data-unidade pre-selecionam o formulario.
+ * Delegado no documento porque o bloco de pagamento reescreve o data-unidade
+ * do proprio CTA quando o visitante troca de tipologia — um listener preso ao
+ * elemento leria o valor de quando a pagina carregou.
+ */
 export function initPerfilPresets(): void {
-  const select = document.getElementById("perfil") as HTMLSelectElement | null;
-  if (!select) return;
-  document.querySelectorAll<HTMLElement>("[data-perfil]").forEach((el) => {
-    el.addEventListener("click", () => {
-      const v = el.dataset.perfil!;
-      if ([...select.options].some((o) => o.value === v)) {
-        select.value = v;
-        select.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-    });
+  const aplicar = (selectId: string, valor: string | undefined) => {
+    const select = document.getElementById(selectId) as HTMLSelectElement | null;
+    if (!select || !valor) return;
+    if ([...select.options].some((o) => o.value === valor)) {
+      select.value = valor;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  };
+
+  document.addEventListener("click", (e) => {
+    const alvo = (e.target as HTMLElement | null)?.closest<HTMLElement>(
+      "[data-perfil], [data-unidade]"
+    );
+    if (!alvo) return;
+    aplicar("perfil", alvo.dataset.perfil);
+    aplicar("unidade", alvo.dataset.unidade);
   });
 }
 
@@ -122,7 +133,7 @@ export function initForm(): void {
     if (nome.getAttribute("aria-invalid") === "true") setError(nome, nome.value.trim().length < 2);
   });
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const badNome = nome.value.trim().length < 2;
@@ -144,17 +155,13 @@ export function initForm(): void {
     const atrib = captureAttribution();
     const pagina = location.pathname + location.search;
 
-    if (!spam) {
-      // 1) grava na base de leads — nunca bloqueia a conversao
-      await Promise.allSettled([
-        saveToSupabase(data, atrib, pagina),
-        postToWebhook({ ...data, ...atrib, pagina, enviado_em: new Date().toISOString() }),
-      ]);
-    }
-
     trackLead({ objetivo: data.perfil ?? "", unidade: data.unidade ?? "" });
 
-    // 2) WhatsApp com a mensagem montada — a conversao que importa no BR
+    // 1) WhatsApp PRIMEIRO, ainda dentro do gesto do clique.
+    //    Se abrisse depois de um `await`, o navegador perderia o vinculo com a
+    //    acao do usuario e trataria a janela como popup — bloqueando justamente
+    //    a conversao que importa. Vale tambem para a confirmacao na tela: ela
+    //    nao pode esperar a ida ao banco.
     const msg = [
       `Olá! Sou ${data.nome}.`,
       `Quero o material do Residencial Sardenha.`,
@@ -166,6 +173,16 @@ export function initForm(): void {
 
     window.open(waLink(msg), "_blank", "noopener");
     ok.hidden = false;
+
+    // 2) so entao grava, sem segurar a interface. Se falhar, o lead ja chegou
+    //    no WhatsApp de qualquer forma.
+    if (!spam) {
+      void Promise.allSettled([
+        saveToSupabase(data, atrib, pagina),
+        postToWebhook({ ...data, ...atrib, pagina, enviado_em: new Date().toISOString() }),
+      ]);
+    }
+
     form.reset();
   });
 }

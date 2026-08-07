@@ -11,6 +11,9 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
+    // permite `from "./x.ts"` — necessario para os testes rodarem direto no
+    // Node (--experimental-strip-types) sem etapa de compilacao
+    "allowImportingTsExtensions": true,
     "types": ["vite/client"]
   },
   "include": ["src"]
