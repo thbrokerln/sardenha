@@ -781,10 +781,13 @@ strong { font-weight: 700; }
   letter-spacing: 0.04em;
   color: var(--mist);
 }
-/* desktop: o pin do ScrollTrigger assume o deslocamento */
-@media (min-width: 861px) and (pointer: fine) {
+/* tablet para cima: o pin do ScrollTrigger assume o deslocamento horizontal */
+@media (min-width: 768px) {
   .gallery__viewport.is-pinned { overflow: hidden; scroll-snap-type: none; }
-  .gallery__viewport.is-pinned .gcard { width: 30vw; max-width: 420px; }
+  .gallery__viewport.is-pinned .gcard { width: 34vw; max-width: 420px; }
+}
+/* o zoom no hover so faz sentido onde existe hover de verdade */
+@media (min-width: 861px) and (pointer: fine) {
   .gcard:hover img { transform: scale(1.04); }
 }
 

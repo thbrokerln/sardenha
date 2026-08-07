@@ -6,7 +6,16 @@ import Lenis from "lenis";
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const EASE = "power3.out";
+/** Ponteiro preciso: vale para cursor customizado e botao magnetico. */
 const fine = () => matchMedia("(min-width: 861px) and (pointer: fine)").matches;
+
+/**
+ * Onde o scroll horizontal fixado faz sentido. Sem exigir `pointer: fine`:
+ * o movimento e dirigido pelo scroll vertical, entao funciona igual em tablet
+ * e notebook com tela sensivel ao toque — que a regra antiga deixava de fora.
+ * Abaixo disso, o carrossel nativo com snap e a melhor experiencia no celular.
+ */
+const podeFixarGaleria = () => matchMedia("(min-width: 768px)").matches;
 
 /* ----------------------------------------------------- scroll com inercia */
 function initSmoothScroll(): void {
@@ -104,19 +113,35 @@ function initHero(): void {
     .to(".hero__body .lead", { opacity: 1, y: 0, duration: 0.8, ease: EASE }, "-=0.5")
     .to(".hero__cta", { opacity: 1, y: 0, duration: 0.8, ease: EASE }, "-=0.6");
 
-  // ken burns lento
-  gsap.fromTo(
-    ".hero__media img",
-    { scale: 1.0 },
-    { scale: 1.07, duration: 14, ease: "none", repeat: -1, yoyo: true }
-  );
+  /* -------------------------------------------------------- push de drone
+     O ken burns anterior era um zoom reto e centrado — lia como "respiracao",
+     nao como camera. Aqui a origem do zoom fica sobre as torres e o mar
+     (55% 38%), e o quadro tambem desliza um pouco nessa direcao, entao o
+     movimento tem sentido: a camera avanca para o empreendimento.
 
-  // saida por scroll
+     Ida e volta com `sine.inOut` em 19s de propósito: um push so de ida nao
+     tem como voltar ao inicio sem corte, e sobrepor duas copias da imagem
+     para disfarcar o corte produz fantasma visivel (mesma foto em escalas
+     diferentes). Nessa lentidao, a volta le como deriva do drone, nao como
+     rebobinar. */
+  gsap.set(".hero__media img", { transformOrigin: "55% 38%" });
+  gsap.to(".hero__media img", {
+    scale: 1.13,
+    xPercent: -1.6,
+    yPercent: -1.1,
+    duration: 19,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true,
+  });
+
+  // saida por scroll — aplicada no container, para nao brigar com o transform
+  // do push de drone que roda na propria imagem
   gsap.timeline({
     scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
   })
     .to(".hero__body", { yPercent: -22, opacity: 0, ease: "none" }, 0)
-    .to(".hero__media img", { yPercent: 12, ease: "none" }, 0);
+    .to(".hero__media", { yPercent: 12, ease: "none" }, 0);
 
   gsap.to(".hero__scroll", {
     y: 7,
@@ -155,6 +180,22 @@ function initReveals(): void {
         duration: 1.25,
         ease: "power3.inOut",
         scrollTrigger: { trigger: img, start: "top 88%" },
+      }
+    );
+  });
+
+  /* Deriva lenta nas fotos que tem profundidade real — a varanda com vista
+     para o mar e o living com a janela. Amarrada ao scroll, nao em loop:
+     movimento automatico em varios lugares ao mesmo tempo vira ruido, e a
+     unica coisa que se mexe sozinha na pagina deve ser o hero. */
+  gsap.utils.toArray<HTMLElement>(".unit__media img").forEach((img) => {
+    gsap.fromTo(
+      img,
+      { scale: 1.04 },
+      {
+        scale: 1.11,
+        ease: "none",
+        scrollTrigger: { trigger: img, start: "top bottom", end: "bottom top", scrub: 1.2 },
       }
     );
   });
@@ -198,7 +239,7 @@ function initGallery(): void {
   const hint = document.querySelector<HTMLElement>("[data-gallery-hint]");
   if (!viewport || !track) return;
 
-  if (!fine()) return; // mobile/touch fica com scroll-snap nativo
+  if (!podeFixarGaleria()) return; // celular fica com scroll-snap nativo
 
   viewport.classList.add("is-pinned");
   if (hint) hint.textContent = "Role para percorrer";
