@@ -2,6 +2,7 @@ import "./styles/main.css";
 import { bindCtaTracking, captureAttribution, initAnalytics } from "./modules/analytics";
 import { initForm, initPerfilPresets, initWhatsAppFloat } from "./modules/form";
 import { initPagamento } from "./modules/pagamento";
+import { initDadosEstruturados } from "./modules/seo";
 import { initHeadlineVariant } from "./modules/variants";
 
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -12,6 +13,7 @@ initAnalytics();
 captureAttribution();
 initHeadlineVariant();
 initPagamento();
+initDadosEstruturados();
 initWhatsAppFloat();
 initPerfilPresets();
 initForm();

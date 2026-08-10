@@ -60,6 +60,16 @@ MAP = {
 }
 
 WIDTHS = [640, 1024, 1600, 2200]
+
+AVIF_PADRAO = 58
+WEBP_PADRAO = 76
+
+# O hero e o recurso do LCP: cada KB dele atrasa a primeira tela. Como ele
+# entra sob um gradiente escuro, aguenta mais compressao sem diferenca
+# perceptivel — verificado ampliando ceu e mar, onde banding apareceria.
+QUALIDADE_POR_IMAGEM = {
+    "hero-aerea": (45, 68),  # (avif, webp)  -> ~38% menor que o padrao
+}
 LOGOS = {102, 108, 56, 49, 76}  # marcas repetidas em todas as paginas
 
 
@@ -143,13 +153,15 @@ def main():
         else:
             im = im.convert("RGB")
 
+        q_avif, q_webp = QUALIDADE_POR_IMAGEM.get(name, (AVIF_PADRAO, WEBP_PADRAO))
+
         base_w = im.width
         for w in WIDTHS:
             if w > base_w and w != WIDTHS[0]:
                 continue
             r = im.resize((w, round(im.height * w / base_w)), Image.LANCZOS)
-            r.save(f"{OUT}/{name}-{w}.avif", quality=58)
-            r.save(f"{OUT}/{name}-{w}.webp", quality=76, method=6)
+            r.save(f"{OUT}/{name}-{w}.avif", quality=q_avif)
+            r.save(f"{OUT}/{name}-{w}.webp", quality=q_webp, method=6)
             made += 2
 
         fw = min(1600, base_w)
