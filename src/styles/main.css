@@ -947,6 +947,8 @@ strong { font-weight: 700; }
 }
 .field.is-invalid input { border-color: #b3261e; }
 .field__err { margin-top: 0.45em; font-size: 0.8rem; color: #b3261e; }
+/* explica por que o campo existe — reduz o atrito do "por que voce quer isso" */
+.field__dica { margin-top: 0.4em; font-size: 0.76rem; line-height: 1.45; color: var(--ink-soft); }
 /* honeypot: fora da tela e fora da ordem de foco, mas nao display:none —
    parte dos robos ignora campo com display:none, e leitor de tela nao chega
    nele porque o container esta aria-hidden e o input tem tabindex -1 */

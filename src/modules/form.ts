@@ -30,6 +30,7 @@ async function saveToSupabase(
     whatsapp: data.whats?.trim(),
     objetivo: data.perfil ?? null,
     unidade: data.unidade ?? null,
+    andar: data.andar ?? null,
     utm_source: atrib.utm_source ?? null,
     utm_medium: atrib.utm_medium ?? null,
     utm_campaign: atrib.utm_campaign ?? null,
@@ -73,6 +74,46 @@ async function postToWebhook(payload: Record<string, unknown>): Promise<void> {
   } catch {
     /* segue para o WhatsApp mesmo se o webhook cair */
   }
+}
+
+const primeiroNome = (n: string | undefined) => (n ?? "").trim().split(/\s+/)[0] ?? "";
+
+/**
+ * Monta a mensagem que a pessoa envia pelo WhatsApp.
+ *
+ * Duas regras que vieram de ver uma mensagem real chegando:
+ *
+ * 1. NAO repetir o telefone. Ela esta escrevendo do proprio WhatsApp — o
+ *    numero ja aparece no cabecalho da conversa. Repetir dentro do texto faz
+ *    a mensagem parecer despejo de formulario, nao gente falando.
+ * 2. Terminar com pedido concreto. "Quero o material" nao abre conversa; abre
+ *    um "vou te mandar". Pedir a tabela do andar e a disponibilidade da ao
+ *    corretor algo exato para responder na primeira mensagem.
+ *
+ * O trecho sobre entrada em 6x e ausencia de banco tambem trabalha a favor:
+ * sinaliza que ela ja viu o modelo de pagamento e nao vai se surpreender.
+ */
+function montarMensagem(data: Record<string, string>): string {
+  const escolheuUnidade = data.unidade && data.unidade !== "Ainda não sei";
+
+  const itens = [
+    escolheuUnidade ? `• Unidade: ${data.unidade}` : `• Unidade: quero entender as duas opções`,
+    `• Objetivo: ${(data.perfil ?? "").toLowerCase()}`,
+    // rotulo "Preferencia" para nao sair "Andar: andar alto"
+    data.andar ? `• Preferência: ${data.andar.toLowerCase()}` : "",
+  ].filter(Boolean);
+
+  return [
+    `Olá! Sou ${data.nome}.`,
+    ``,
+    `Vi a página do Residencial Sardenha e quero avançar.`,
+    ``,
+    ...itens,
+    ``,
+    `Já vi as condições na página (entrada diluída em 6x, pagamento direto com a incorporadora, sem financiamento bancário).`,
+    ``,
+    `Pode me mandar a tabela com os valores de hoje e o que ainda está disponível?`,
+  ].join("\n");
 }
 
 function setError(input: HTMLInputElement, on: boolean): void {
@@ -162,16 +203,11 @@ export function initForm(): void {
     //    acao do usuario e trataria a janela como popup — bloqueando justamente
     //    a conversao que importa. Vale tambem para a confirmacao na tela: ela
     //    nao pode esperar a ida ao banco.
-    const msg = [
-      `Olá! Sou ${data.nome}.`,
-      `Quero o material do Residencial Sardenha.`,
-      ``,
-      `Objetivo: ${data.perfil}`,
-      `Unidade: ${data.unidade}`,
-      `Meu WhatsApp: ${data.whats}`,
-    ].join("\n");
+    window.open(waLink(montarMensagem(data)), "_blank", "noopener");
 
-    window.open(waLink(msg), "_blank", "noopener");
+    ok.textContent =
+      `Pronto, ${primeiroNome(data.nome)}. Abrimos seu WhatsApp com o resumo — ` +
+      `é só enviar. Se não abrir, use o botão verde no canto da tela.`;
     ok.hidden = false;
 
     // 2) so entao grava, sem segurar a interface. Se falhar, o lead ja chegou
