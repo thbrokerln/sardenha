@@ -44,6 +44,21 @@ function preencher(raiz: HTMLElement, id: TipologiaId): void {
     });
   }
 
+  /* A urgencia mais forte deste produto e a unica que nao precisa ser
+     inventada: a obra corre, e cada mes que passa acrescenta uma parcela
+     vencida a entrada do ato. O numero sai do proprio espelho. */
+  const urg = raiz.querySelector<HTMLElement>('[data-slot="urgencia"]');
+  if (urg) {
+    const acabou = c.mensaisRestantes === 0;
+    urg.hidden = acabou;
+    if (!acabou) {
+      urg.innerHTML =
+        `Cada mês de espera acrescenta mais uma parcela de obra à entrada do ato: ` +
+        `<b>${moeda(t.mensal)}</b> a mais por mês. Em três meses, ` +
+        `<b>${moeda(t.mensal * 3)}</b>.`;
+    }
+  }
+
   // tarja de INCC: os valores continuam na tela, com o aviso por cima
   const tarja = raiz.querySelector<HTMLElement>('[data-slot="tarjaIncc"]');
   if (tarja) {

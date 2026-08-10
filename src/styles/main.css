@@ -539,6 +539,21 @@ strong { font-weight: 700; }
   font-variant-numeric: tabular-nums;
 }
 
+/* urgencia real: a obra corre sozinha e a conta sobe. Fica dentro do bloco
+   da entrada, logo abaixo do total, que e onde a duvida "espero ou nao"
+   aparece na cabeca de quem le. */
+.pagto__urgencia {
+  margin-top: 12px;
+  padding: 10px 13px;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  background: rgb(253 250 245 / 0.06);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #f2ddc8;
+}
+.pagto__urgencia b { color: #fff; font-weight: 700; }
+
 .pagto__alerta {
   margin-top: 11px;
   padding: 9px 12px;
