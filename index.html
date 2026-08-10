@@ -80,12 +80,16 @@
     <div class="wrap">
       <p class="eyebrow">Praia do Massaguaçu · Caraguatatuba — SP</p>
       <h1 class="display h-xl" data-split data-hero-h1>A 250m do mar, pelo preço de quem entra antes da chave.</h1>
-      <p class="lead" data-hero-sub>Residencial Sardenha: quatro torres na Praia do Massaguaçu, com studios de 43m² e apartamentos de 61m². Comprando ainda na fase de obra, direto com a incorporadora, o capital fica diluído ao longo da construção.</p>
+      <p class="lead" data-hero-sub>Quatro torres na Praia do Massaguaçu, compradas ainda na fase de obra e pagas direto com a incorporadora — sem banco no meio.</p>
       <div class="hero__cta">
         <a href="#contato" class="btn btn--primary" data-magnetic data-cta="hero-primario">Receber tabela e plantas</a>
         <a href="#pagamento" class="btn btn--ghost" data-cta="hero-secundario">Ver as condições</a>
       </div>
-      <p class="hero__gancho">Studios a partir de <strong>R$ 258.641</strong> · entrada em 6x · sem financiamento bancário</p>
+      <p class="hero__gancho">
+        <span><b>43,87m²</b> · 1 suíte <strong>R$ 258.641</strong></span>
+        <span><b>61,42m²</b> · 2 suítes <strong>R$ 364.106</strong></span>
+        <small>Entrada diluída em 6x · sem financiamento bancário</small>
+      </p>
     </div>
   </div>
 
@@ -115,10 +119,21 @@
     </div>
 
     <div class="pagto__card" data-reveal>
+      <!-- O preco fica NA aba: assim os dois valores aparecem sem exigir
+           clique. Antes, quem queria 2 dormitorios via o preco do studio e
+           precisava descobrir que havia outra aba — e chegava no WhatsApp
+           perguntando "quanto custa". -->
       <div class="pagto__tabs" role="tablist" aria-label="Escolha a tipologia">
-        <button class="pagto__tab is-on" role="tab" aria-selected="true" data-tipo="studio" id="tab-studio" aria-controls="painel-pagto">Studio 43,87m²</button>
-        <button class="pagto__tab" role="tab" aria-selected="false" data-tipo="apto" id="tab-apto" aria-controls="painel-pagto">Apto 61,42m²</button>
+        <button class="pagto__tab is-on" role="tab" aria-selected="true" data-tipo="studio" id="tab-studio" aria-controls="painel-pagto">
+          <span class="pagto__tab-nome">Studio 43,87m² · 1 suíte</span>
+          <span class="pagto__tab-preco">R$ 258.641</span>
+        </button>
+        <button class="pagto__tab" role="tab" aria-selected="false" data-tipo="apto" id="tab-apto" aria-controls="painel-pagto">
+          <span class="pagto__tab-nome">Apto 61,42m² · 2 suítes</span>
+          <span class="pagto__tab-preco">R$ 364.106</span>
+        </button>
       </div>
+      <p class="pagto__dica-abas">Toque na tipologia para ver a entrada e as parcelas de cada uma.</p>
 
       <div id="painel-pagto" role="tabpanel" aria-labelledby="tab-studio">
         <p class="pagto__desc" data-slot="descricao">1 suíte · 1 vaga + hobby box</p>
@@ -673,7 +688,7 @@
 </a>
 
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
-  <span>Studios de 43m² · apenas 2 por andar</span>
+  <span><b>43m²</b> R$ 258.641 &nbsp;·&nbsp; <b>61m²</b> R$ 364.106</span>
   <a href="#contato" class="btn btn--primary" data-cta="sticky">Ver disponibilidade</a>
 </div>
 

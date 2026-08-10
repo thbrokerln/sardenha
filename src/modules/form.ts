@@ -1,5 +1,7 @@
 import { CONFIG } from "../config";
+import { TIPOLOGIAS } from "../precos.ts";
 import { captureAttribution, trackContact, trackLead } from "./analytics";
+import { moeda } from "./precos.ts";
 
 const waLink = (text: string) =>
   `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`;
@@ -123,11 +125,33 @@ function setError(input: HTMLInputElement, on: boolean): void {
   input.setAttribute("aria-invalid", String(on));
 }
 
+/**
+ * Botao flutuante do WhatsApp.
+ *
+ * A mensagem carrega os valores das duas tipologias de proposito. Ele fica
+ * disponivel desde o topo, entao da para sair da pagina sem rolar nada — e era
+ * o que estava acontecendo: lead chegando e perguntando "quanto custa" depois
+ * de ja ter recebido o material. Com o preco dentro da propria mensagem, mesmo
+ * quem pula a pagina chega sabendo, e a conversa comeca filtrada.
+ */
 export function initWhatsAppFloat(): void {
   const el = document.getElementById("waFloat") as HTMLAnchorElement | null;
   if (!el) return;
+
+  const precos = Object.values(TIPOLOGIAS)
+    .map((t) => `${t.rotulo} — ${moeda(t.total)}`)
+    .join("\n");
+
   el.href = waLink(
-    "Olá! Vi a página do Residencial Sardenha e queria saber mais sobre as condições da fase de obra."
+    [
+      "Olá! Vi a página do Residencial Sardenha.",
+      "",
+      precos,
+      "",
+      "Vi que a entrada é diluída em 6x e que o pagamento é direto com a incorporadora, sem financiamento bancário.",
+      "",
+      "Pode me confirmar as condições atualizadas e o que ainda está disponível?",
+    ].join("\n")
   );
   el.addEventListener("click", () => trackContact({ origem: "float" }));
 }

@@ -416,13 +416,33 @@ strong { font-weight: 700; }
 @media (max-width: 560px) { .hero__scroll { display: none; } }
 
 /* ------------------------------------------------- condicoes de pagamento */
+/* Os dois precos ja na primeira tela: quem chega de anuncio decide aqui se
+   o produto cabe, e antes precisava rolar ate a segunda dobra para descobrir. */
 .hero__gancho {
-  margin-top: 1.5em;
-  font-size: 0.92rem;
-  color: #e0e6e2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5em 1.4em;
+  margin-top: 1.6em;
+  padding-top: 1.2em;
+  border-top: 1px solid rgb(253 250 245 / 0.18);
+  font-size: 0.9rem;
+  color: #cfd6d2;
 }
-.hero__gancho strong { color: #fff; font-weight: 700; }
-@media (max-width: 560px) { .hero__gancho { font-size: 0.85rem; } }
+.hero__gancho > span { display: inline-flex; align-items: baseline; gap: 0.5em; }
+.hero__gancho b { font-weight: 600; color: #e9ede9; }
+.hero__gancho strong {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 1.32rem;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.hero__gancho small { flex-basis: 100%; font-size: 0.78rem; color: var(--mist); }
+@media (max-width: 560px) {
+  .hero__gancho { gap: 0.35em 1em; font-size: 0.82rem; }
+  .hero__gancho strong { font-size: 1.15rem; }
+}
 
 /* duas colunas no desktop: o argumento a esquerda, a tabela a direita.
    Em coluna unica o titulo empurrava o card para fora da primeira tela —
@@ -452,22 +472,50 @@ strong { font-weight: 700; }
   .pagto__intro .ticks { display: none; } /* o card ja diz isso logo abaixo */
 }
 
-.pagto__tabs { display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+/* as duas tipologias com o preco visivel lado a lado, sem clique */
+.pagto__tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .pagto__tab {
-  padding: 0.66em 1.15em;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0.9em 1em;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 14px;
   background: transparent;
   color: var(--mist);
-  font-weight: 600;
-  font-size: 0.88rem;
+  text-align: left;
   cursor: pointer;
-  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease),
+              border-color 0.3s var(--ease), transform 0.3s var(--ease);
 }
-.pagto__tab:hover { color: var(--paper); border-color: rgb(253 250 245 / 0.35); }
-.pagto__tab.is-on { background: var(--terra); border-color: var(--terra); color: #fff; }
+.pagto__tab:hover { color: var(--paper); border-color: rgb(253 250 245 / 0.4); transform: translateY(-2px); }
+.pagto__tab-nome { font-size: 0.76rem; font-weight: 600; line-height: 1.35; }
+.pagto__tab-preco {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 3.6vw, 1.5rem);
+  line-height: 1;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.pagto__tab.is-on {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: #fff;
+}
+.pagto__tab.is-on .pagto__tab-preco { color: #fff; }
 
-.pagto__desc { margin: 0.9em 0 1.3em; font-size: 0.86rem; color: var(--mist); }
+.pagto__dica-abas {
+  margin-top: 0.75em;
+  font-size: 0.74rem;
+  color: var(--mist);
+}
+.pagto__desc { margin: 1.1em 0 1.3em; font-size: 0.86rem; color: var(--mist); }
+
+@media (max-width: 420px) {
+  .pagto__tabs { grid-template-columns: 1fr; gap: 8px; }
+  .pagto__tab { flex-direction: row; align-items: baseline; justify-content: space-between; }
+}
 
 .pagto__bloco {
   padding: 15px 17px;
@@ -628,7 +676,6 @@ strong { font-weight: 700; }
 @media (max-width: 520px) {
   .pagto__lin { flex-direction: column; gap: 4px; }
   .pagto__lin > b { font-size: 1.15rem; }
-  .pagto__tab { flex: 1; text-align: center; }
 }
 
 /* ------------------------------------------------------------------ stats */
@@ -1105,6 +1152,7 @@ strong { font-weight: 700; }
 }
 .sticky-cta.is-in { transform: none; }
 .sticky-cta span { font-size: 0.88rem; color: var(--mist); }
+.sticky-cta span b { color: var(--paper); font-weight: 600; }
 .sticky-cta .btn { padding: 0.78em 1.35em; font-size: 0.88rem; white-space: nowrap; }
 @media (max-width: 620px) {
   .sticky-cta { justify-content: space-between; gap: 12px; padding-inline: 16px; }

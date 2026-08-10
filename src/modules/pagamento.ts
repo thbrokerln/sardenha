@@ -88,6 +88,14 @@ export function initPagamento(): void {
   const tabs = [...card.querySelectorAll<HTMLButtonElement>(".pagto__tab")];
   if (tabs.length === 0) return;
 
+  // preco de cada tipologia na propria aba, para os dois ficarem visiveis
+  // sem clique nenhum
+  for (const b of tabs) {
+    const t = TIPOLOGIAS[b.dataset.tipo as TipologiaId];
+    const alvo = b.querySelector<HTMLElement>(".pagto__tab-preco");
+    if (t && alvo) alvo.textContent = moeda(t.total);
+  }
+
   const trocar = (id: TipologiaId) => {
     tabs.forEach((b) => {
       const ativa = b.dataset.tipo === id;
