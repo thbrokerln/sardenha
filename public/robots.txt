@@ -1,42 +1,18 @@
 # Residencial Sardenha — sardenha.thimoveiscaragua.com
+#
+# ATENCAO: o Cloudflare injeta um bloco "Managed content" ANTES deste arquivo,
+# e naquele bloco GPTBot, ClaudeBot, Google-Extended, CCBot e meta-externalagent
+# estao com Disallow. Pela especificacao, o primeiro grupo que casa com o
+# User-agent e o que vale — entao qualquer Allow escrito aqui para esses robos
+# seria ignorado, e so criaria a falsa impressao de que estao liberados.
+#
+# Para liberar rastreador de IA de verdade:
+#   Cloudflare > dominio > AI Crawl Control > desativar o bloqueio gerenciado
+#
+# O bloco do Cloudflare tambem inclui a diretiva `Content-Signal`, que o Google
+# nao reconhece e reporta como robots.txt invalido.
 
 User-agent: *
-Allow: /
-
-# Rastreadores de IA liberados de proposito: a pagina existe para ser
-# encontrada, e ser citada por assistente de busca traz lead qualificado.
-# Para bloquear algum deles, troque Allow por Disallow no bloco dele.
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: meta-externalagent
 Allow: /
 
 Sitemap: https://sardenha.thimoveiscaragua.com/sitemap.xml
