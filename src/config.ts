@@ -29,9 +29,17 @@ export const CONFIG = {
   /** Link do book em PDF, se quiser oferecer download. Vazio = esconde o botao. */
   pdfBook: "", // <<< OPCIONAL
 
-  /** IDs de rastreamento. Vazio = o script nem carrega. */
-  metaPixelId: "", // <<< TROCAR
-  ga4Id: "", // <<< TROCAR
+  /**
+   * ID do Pixel do Meta. E publico por design (aparece no codigo da pagina).
+   * Dispara PageView na carga, Lead no envio do formulario e Contact no clique
+   * do WhatsApp.
+   *
+   * NAO confundir com o token da Conversions API (o "EAAd..."): aquele e chave
+   * de servidor e NUNCA entra aqui — no frontend, qualquer um leria e poderia
+   * forjar conversao na sua conta de anuncios. Ele so vive do lado do servidor.
+   */
+  metaPixelId: "1715820572780570",
+  ga4Id: "", // <<< opcional
 
   /** Dominio canonico, usado no <link rel=canonical> e no JSON-LD. */
   siteUrl: "https://sardenha.thimoveiscaragua.com",
