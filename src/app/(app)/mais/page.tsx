@@ -3,6 +3,7 @@ import { Cabecalho } from "@/components/ui";
 import { sair } from "../actions";
 
 const ITENS = [
+  { href: "/conta/senha", nome: "Minha senha", pronto: true },
   { href: "/clientes", nome: "Clientes", pronto: true },
   { href: "/proprietarios", nome: "Proprietários", pronto: true },
   { href: "/em-breve/agenda", nome: "Agenda", pronto: false },
